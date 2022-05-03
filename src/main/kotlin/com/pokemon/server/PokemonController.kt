@@ -1,6 +1,7 @@
 package com.pokemon.server
 
 import Pokemon
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
@@ -68,5 +69,17 @@ class PokemonController {
     @GetMapping("pokemonPorAtaque/{ataque}")
     fun requestPokemonPorAtaque(@PathVariable ataque : String) : ListaPokemon {
         return listaPokemon.buscarPokemonPorAtaque(ataque)
+    }
+
+    @GetMapping("pokemon/{id}")
+    fun requestPokemonPorId(@PathVariable id: Long) : Any {
+        return listaPokemon.buscarPokemonPorId(id)
+    }
+
+    @DeleteMapping("pokemon/{id}")
+    fun requestDeletePokemonPorId(@PathVariable id: Long) : Any {
+        // TODO esta función requiere de un token válido para poder ejecutarse
+        // si el token no existe, no se borra ningún pokémon
+        return listaPokemon.borrarPokemonPorId(id)
     }
 }
