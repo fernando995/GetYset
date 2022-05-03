@@ -24,6 +24,9 @@ class UsuarioController(private val usuarioRepository: UsuarioRepository) {
         }
     }
 
+    /*
+    curl --request POST  --header "Content-type:application/json" --data "{\"nombre\":\"u2\", \"pass\":\"p2\"}" localhost:8084/crearUsuario {"nombre":"u2","pass":"p2","token":"u2p2"}
+     */
     @PostMapping("crearUsuario")
     @Synchronized
     fun requestCrearUsuarioJson(@RequestBody usuario: Usuario) : Any {

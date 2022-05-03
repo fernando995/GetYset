@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.concurrent.atomic.AtomicInteger
 
 @RestController
-class PokemonController {
+class PokemonController(private val usuarioRepository: UsuarioRepository) {
 
     var numRequestRecibidas = AtomicInteger(0)
 
@@ -76,10 +76,19 @@ class PokemonController {
         return listaPokemon.buscarPokemonPorId(id)
     }
 
-    @DeleteMapping("pokemon/{id}")
-    fun requestDeletePokemonPorId(@PathVariable id: Long) : Any {
+    /*
+    curl -X DELETE localhost:8084/pokemon/1/u2p1
+     */
+    @DeleteMapping("pokemon/{id}/{token}")
+    fun requestDeletePokemonPorId(@PathVariable id: Long, @PathVariable token: String) : Any {
         // TODO esta función requiere de un token válido para poder ejecutarse
-        // si el token no existe, no se borra ningún pokémon
-        return listaPokemon.borrarPokemonPorId(id)
+        // si el token no existe, no se borra ningún pokémon y dice "Usuario Inválido"
+        usuarioRepository.findAll().forEach {
+            if (it.token == token) {
+                return listaPokemon.borrarPokemonPorId(id)
+            }
+        }
+        return "Usuario Inválido"
+
     }
 }
