@@ -89,7 +89,8 @@ data class VersionDetail (
 
 @Serializable
 data class Move (
-    val move: Species,
+    val name: String,
+    val url: String,
 
     @SerializedName("version_group_details")
     val versionGroupDetails: List<VersionGroupDetail>

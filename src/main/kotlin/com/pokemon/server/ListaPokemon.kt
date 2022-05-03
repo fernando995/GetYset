@@ -10,7 +10,7 @@ class ListaPokemon(var listaPokemon : MutableList<Pokemon> = mutableListOf()) {
         const val filePath = "pokemons.json"
 
         fun fileExist() : Boolean {
-            return File("hola.txt").exists()
+            return File(filePath).exists()
         }
 
         fun cargarListaPokemonDeFichero() : ListaPokemon {
@@ -58,8 +58,84 @@ class ListaPokemon(var listaPokemon : MutableList<Pokemon> = mutableListOf()) {
         return ListaPokemon(listaFiltrada.toMutableList())
     }
 
+    fun buscarPokemonPeque() : Pokemon {
+        val listaOrdenada = listaPokemon.sortedBy {
+            it.height
+        }
+
+        return listaOrdenada.first()
+    }
+
+    fun buscarPokemonGrande() : Pokemon {
+        val listaOrdenada = listaPokemon.sortedBy {
+            it.height
+        }
+
+        return listaOrdenada.last()
+    }
+
+    fun buscarPokemonGordo() : Pokemon {
+        val listaOrdenada = listaPokemon.sortedBy {
+            it.weight
+        }
+
+        return listaOrdenada.last()
+    }
+
+    fun buscarPokemonMasGordoQue(peso : Int) : ListaPokemon {
+        val listaFiltrada = listaPokemon.filter {
+            it.weight > peso
+        }
+
+        return ListaPokemon(listaFiltrada.toMutableList())
+    }
+
     fun guardarEnFichero(){
         val file = File(filePath)
         file.writeText(gson.toJson(this))
+    }
+
+    fun buscarPokemonMasGordoPorTipo(tipoBuscado: String): Pokemon {
+        val listaOrdenada = listaPokemon.sortedBy {
+            it.weight
+        }
+        val listaFiltrada = listaOrdenada.filter { pokemon ->
+            var encontrado = false
+            pokemon.types.forEach {  tipo ->
+                if (tipo.type.name == tipoBuscado)
+                    encontrado = true
+            }
+            encontrado
+        }
+        return listaFiltrada.last()
+    }
+
+    fun buscarPokemonMasGordoPorTipoYPeso(tipoBuscado: String, pesoMinimo : Int): ListaPokemon {
+        val listaOrdenada = listaPokemon.sortedBy {
+            it.weight
+        }
+        val listaFiltrada = listaOrdenada.filter { pokemon ->
+            var encontrado = false
+            pokemon.types.forEach {  tipo ->
+                if (tipo.type.name == tipoBuscado)
+                    encontrado = true
+            }
+            encontrado && pokemon.weight > pesoMinimo
+        }
+
+        return ListaPokemon(listaFiltrada.sortedBy { it.id }.toMutableList())
+    }
+
+    fun buscarPokemonPorAtaque(ataque: String): ListaPokemon {
+        val listaFiltrada = listaPokemon.filter { pokemon ->
+            var encontrado = false
+            pokemon.moves.forEach {  move ->
+                if (move.name == ataque)
+                    encontrado = true
+            }
+            encontrado
+        }
+
+        return ListaPokemon(listaFiltrada.toMutableList())
     }
 }
