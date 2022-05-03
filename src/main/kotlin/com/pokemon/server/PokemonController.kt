@@ -35,7 +35,7 @@ class PokemonController {
         return listaPokemon.buscarPokemonPorTipo(tipo)
     }
 
-    @GetMapping("pokemonMasPequeño")
+    @GetMapping("pokemonMasPequeno")
     fun requestPokemonPeque() : Pokemon {
         return listaPokemon.buscarPokemonPeque()
     }

@@ -130,7 +130,7 @@ class ListaPokemon(var listaPokemon : MutableList<Pokemon> = mutableListOf()) {
         val listaFiltrada = listaPokemon.filter { pokemon ->
             var encontrado = false
             pokemon.moves.forEach {  move ->
-                if (move.name == ataque)
+                if (move.move.name == ataque)
                     encontrado = true
             }
             encontrado
