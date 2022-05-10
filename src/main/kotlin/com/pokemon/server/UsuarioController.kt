@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class UsuarioController(private val usuarioRepository: UsuarioRepository) {
 
+    // Podemos hacer la request desde el navegador.
     @GetMapping("crearUsuario/{nombre}/{pass}")
     @Synchronized
     fun requestCrearUsuario(@PathVariable nombre: String, @PathVariable pass: String) : Any {
@@ -44,4 +45,19 @@ class UsuarioController(private val usuarioRepository: UsuarioRepository) {
             usuario
         }
     }
+
+
+    @PostMapping("pokemonFavorito/{token}/{pokemonId}")
+    fun guardarPokemonFavorito(@PathVariable token: String, @PathVariable pokemonId: Int) : Any {
+        println(token)
+        usuarioRepository.findAll().forEach { user ->
+            if (user.token == token) {
+                user.pokemonFavoritoId = pokemonId
+                usuarioRepository.save(user)
+                return "El usuario ${user.nombre} tiene un nuevo Pokémon favorito"
+            }
+        }
+        return "Token no encontrado"
+    }
+
 }
